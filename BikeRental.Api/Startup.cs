@@ -30,12 +30,6 @@ namespace BikeRental.Api
             services.AddMvc()
                 .AddJsonOptions(options => { options.SerializerSettings.Formatting = Formatting.Indented; });
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<ICustomerService, CustomerService>();
-            services.AddSingleton(AutoMapperConfig.Initialize());
-
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterModule(new ContainerModule(Configuration));
