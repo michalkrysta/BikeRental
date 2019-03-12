@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BikeRental.Core.Domain;
 using BikeRental.Core.Repositories;
 using BikeRental.Infrastructure.DTO;
@@ -10,40 +10,25 @@ namespace BikeRental.Infrastructure.Services
 {
     public class UserService : IUserService
     {
+        private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserDto> GetAsync(string email)
         {
             var user = await _userRepository.GetAsync(email);
-            return new UserDto
-            {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                Role = user.Role,
-                FullName = user.FullName
-            };
+            return _mapper.Map<User, UserDto>(user);
         }
 
         public async Task<IEnumerable<UserDto>> BrowseAsync()
         {
             var users = await _userRepository.GetAllAsync();
-
-            var usersDto = users.Select(x => new UserDto
-            {
-                Id = x.Id,
-                Username = x.Username,
-                Email = x.Email,
-                Role = x.Role,
-                FullName = x.FullName
-            });
-
-            return usersDto;
+            return _mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(users);
         }
 
         public async Task RegisterAsync(Guid userId, string email,

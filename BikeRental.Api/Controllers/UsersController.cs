@@ -11,10 +11,9 @@ namespace BikeRental.Api.Controllers
     {
         private readonly IUserService _userService;
 
-        //public UsersController(IUserService userService)
-        public UsersController()
+        public UsersController(IUserService userService)
         {
-            _userService = new UserService(new UserRepository());
+            _userService = userService;
         }
 
         [HttpGet]
