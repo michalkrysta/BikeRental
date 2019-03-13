@@ -9,8 +9,8 @@ namespace BikeRental.Api.Controllers
 {
     public class UsersController : ApiControllerBase
     {
-        private readonly IUserService _userService;
         private readonly GeneralSettings _generalSettings;
+        private readonly IUserService _userService;
 
         public UsersController(IUserService userService,
             ICommandDispatcher commandDispatcher, GeneralSettings generalSettings) : base(commandDispatcher)
@@ -22,7 +22,7 @@ namespace BikeRental.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var setting = _generalSettings.Name;
+            //var setting = _generalSettings.Name;
             var users = await _userService.BrowseAsync();
             return Json(users);
         }

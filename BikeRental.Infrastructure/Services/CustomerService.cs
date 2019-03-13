@@ -5,6 +5,8 @@ using AutoMapper;
 using BikeRental.Core.Domain;
 using BikeRental.Core.Repositories;
 using BikeRental.Infrastructure.DTO;
+using BikeRental.Infrastructure.Exceptions;
+using ErrorCodes = BikeRental.Infrastructure.Exceptions.ErrorCodes;
 
 namespace BikeRental.Infrastructure.Services
 {
@@ -38,10 +40,11 @@ namespace BikeRental.Infrastructure.Services
         {
             var user = await _userRepository.GetAsync(userId);
             if (user == null)
-                throw new Exception($"User with user id: '{userId}' does not exist.");
+                throw new ServiceException(ErrorCodes.UserNotFound, $"User with user id: '{userId}' does not exist.");
             var customer = await _customerRepository.GetAsync(userId);
             if (customer != null)
-                throw new Exception($"Customer with user id: '{userId}' already exists.");
+                throw new ServiceException(ErrorCodes.CustomerAlreadyExists,
+                    $"Customer with user id: '{userId}' already exists.");
             customer = new Customer(user);
             await _customerRepository.AddAsync(customer);
         }

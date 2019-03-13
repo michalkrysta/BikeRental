@@ -5,6 +5,8 @@ using AutoMapper;
 using BikeRental.Core.Domain;
 using BikeRental.Core.Repositories;
 using BikeRental.Infrastructure.DTO;
+using BikeRental.Infrastructure.Exceptions;
+using ErrorCodes = BikeRental.Infrastructure.Exceptions.ErrorCodes;
 
 namespace BikeRental.Infrastructure.Services
 {
@@ -36,7 +38,7 @@ namespace BikeRental.Infrastructure.Services
         {
             var user = await _userRepository.GetAsync(email);
             if (user != null)
-                throw new Exception($"User with email: '{email}' already exists.");
+                throw new ServiceException(ErrorCodes.EmailInUse, $"User with email: '{email}' already exists.");
             //var salt = _encrypter.GetSalt(password);
             //var hash = _encrypter.GetHash(password, salt);
             user = new User(userId, email, username, role, password, "salt");
@@ -47,11 +49,11 @@ namespace BikeRental.Infrastructure.Services
         {
             var user = await _userRepository.GetAsync(email);
             if (user == null)
-                throw new Exception("Invalid credentials");
+                throw new ServiceException(ErrorCodes.InvalidCredentials, "Invalid credentials");
             //var hash = _encrypter.GetHash(password, user.Salt);
             if (user.Password == password)
                 return;
-            throw new Exception("Invalid credentials");
+            throw new ServiceException(ErrorCodes.InvalidCredentials, "Invalid credentials");
         }
     }
 }

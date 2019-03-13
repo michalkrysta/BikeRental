@@ -1,11 +1,8 @@
 ﻿using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using BikeRental.Core.Repositories;
+using BikeRental.Api.Framework;
 using BikeRental.Infrastructure.IoC;
-using BikeRental.Infrastructure.Mappers;
-using BikeRental.Infrastructure.Repositories;
-using BikeRental.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +40,7 @@ namespace BikeRental.Api
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
+            app.UseMiddleware(typeof(ExceptionHandlerMiddleware));
             app.UseMvc();
             appLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }

@@ -35,9 +35,9 @@ namespace BikeRental.Core.Domain
         public void SetUsername(string username)
         {
             if (!NameRegex.IsMatch(username))
-                throw new Exception("Username is invalid.");
+                throw new DomainException(ErrorCodes.InvalidUsername, "Username is invalid.");
             if (string.IsNullOrEmpty(username))
-                throw new Exception("Username is invalid.");
+                throw new DomainException(ErrorCodes.InvalidUsername, "Username is invalid.");
             Username = username.ToLowerInvariant();
             UpdatedAt = DateTime.UtcNow;
         }
@@ -45,7 +45,7 @@ namespace BikeRental.Core.Domain
         public void SetEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
-                throw new Exception("Email can not be empty.");
+                throw new DomainException(ErrorCodes.InvalidEmail, "Email can not be empty.");
             if (Email == email)
                 return;
             Email = email.ToLowerInvariant();
@@ -55,7 +55,7 @@ namespace BikeRental.Core.Domain
         public void SetRole(string role)
         {
             if (string.IsNullOrWhiteSpace(role))
-                throw new Exception("Role can not be empty.");
+                throw new DomainException(ErrorCodes.InvalidRole, "Role can not be empty.");
             if (Role == role)
                 return;
             Role = role;
@@ -65,13 +65,14 @@ namespace BikeRental.Core.Domain
         public void SetPassword(string password, string salt)
         {
             if (string.IsNullOrWhiteSpace(password))
-                throw new Exception("Password can not be empty.");
+                throw new DomainException(ErrorCodes.InvalidPassword, "Password can not be empty.");
             if (string.IsNullOrWhiteSpace(salt))
-                throw new Exception("Salt can not be empty.");
+                throw new DomainException(ErrorCodes.InvalidPassword, "Salt can not be empty.");
             if (password.Length < 4)
-                throw new Exception("Password must contain at least 4 characters.");
+                throw new DomainException(ErrorCodes.InvalidPassword, "Password must contain at least 4 characters.");
             if (password.Length > 100)
-                throw new Exception("Password can not contain more than 100 characters.");
+                throw new DomainException(ErrorCodes.InvalidPassword,
+                    "Password can not contain more than 100 characters.");
             if (Password == password)
                 return;
             Password = password;

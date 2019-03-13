@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BikeRental.Core.Domain
+﻿namespace BikeRental.Core.Domain
 {
     public class Bicycle
     {
@@ -22,7 +20,7 @@ namespace BikeRental.Core.Domain
         private void SetBrand(string brand)
         {
             if (string.IsNullOrWhiteSpace(brand))
-                throw new Exception("Please provide valid data.");
+                throw new DomainException(ErrorCodes.InvalidBicycleBrand, "Please provide valid data.");
             if (Brand == brand)
                 return;
             Brand = brand;
@@ -31,7 +29,7 @@ namespace BikeRental.Core.Domain
         private void SetModel(string model)
         {
             if (string.IsNullOrWhiteSpace(model))
-                throw new Exception("Please provide valid data.");
+                throw new DomainException(ErrorCodes.InvalidBicycleModel, "Please provide valid data.");
             if (Model == model)
                 return;
             Model = model;
@@ -40,7 +38,7 @@ namespace BikeRental.Core.Domain
         private void SetType(string type)
         {
             if (string.IsNullOrWhiteSpace(type))
-                throw new Exception("Please provide valid data.");
+                throw new DomainException(ErrorCodes.InvalidBicycleType, "Please provide valid data.");
             if (Type == type)
                 return;
             Type = type;
